@@ -5,25 +5,47 @@ import os
 import json
 
 # expression='1-2*((60+2*(-3-40.0/5)*(9-2*5/3+7/3*99/4*2998+10*568/14))-(-4*3)/(16-3*2))'
-# expression='1-2*10*(9-2*5/3+7/3*99/4*2998+10*568/14))-(-4*3)/(16-3*2))'
+# expression='1-2*10*(-9-2*5/3+7/3*99/4*2998+10*568/14))-(-4*3)/(16-3*2))'
 # content=re.search('\(([\-\+\*\/]*\d+\.?\d*)+\)',expression).group() #(-3-40.0/5)
 
 def add_sub(bracket_content_after_md): #加减法
-    print(bracket_content_after_md)     #3-8.0
+    # print(bracket_content_after_md)     #-3-8.0
     if re.search('(\d+\.?\d*)[\+\-](\d+\.?\d*)', bracket_content_after_md):
         first_add_sub = re.search('(\d+\.?\d*)[\+\-](\d+\.?\d*)', bracket_content_after_md).group()
-        print(first_add_sub,type(first_add_sub))        #3-8.0 <class 'str'>
-        first_add_sub = re.split('\+|\-', first_add_sub)    #将数字和+ - 号分离
-        print(first_add_sub)    #['3', '8.0']
-        first_dig = float(first_add_sub[0])
+        # print(first_add_sub,type(first_add_sub))        #3-8.0 <class 'str'>
+        first_add_sub_dig = re.split('\+|\-', first_add_sub)    #将数字和+ - 号分离
+        # print(first_add_sub_dig)    #['3', '8.0']
+        if #加个负号判断
+        first_dig = float(first_add_sub_dig[0])
         # print(first_dig)    #3.0
-        second_dig = float(first_add_sub[1])
+        second_dig = float(first_add_sub_dig[1])
         # print(second_dig)   #8.0
         first_add_sub_sym = re.findall('[\+\-]',first_add_sub)     #提取运算符号
-        print(first_add_sub_sym)
+        print(first_add_sub_sym)    #['-']
+
+        if '-' in first_add_sub_sym:        #判断运算符并进行真实运算
+            result_add_sub = first_dig - second_dig
+            # print(result_add_sub,print(type(result_add_sub)))
+            result_add_sub_str = str(result_add_sub)  # 将结果转化为字符串
+            print(result_add_sub_str,type(result_add_sub_str))      #-5.0 <class 'str'>
+        else:   #加法进行下面的操作和上面除法操作一样
+            result_add_sub = first_dig + second_dig
+            # print(result_add_sub,print(type(result_add_sub)))
+            result_add_sub_str = str(result_add_sub)  # 将结果转化为字符串
+            print(result_add_sub_str, type(result_add_sub_str))  # -5.0 <class 'str'>
+
+        bracket_content_after_as = bracket_content_after_md.replace(first_add_sub, result_add_sub_str)  #替换运算结果
+
+        bracket_content_after_md = bracket_content_after_as
+
+        return add_sub(bracket_content_after_md)    ##迭代处理加减
+
+    else:
+        return bracket_content_after_md  ##迭代处理加减
+
 
 def mul_div(bracket_content):   #乘除法--处理括号内所有乘除法
-    # print(bracket_content)  #-3-40.0/5
+    print(bracket_content)  #-3-40.0/5
     if re.search('(\d+\.?\d*)[\*\/](\d+\.?\d*)',bracket_content):
         first_mul_div = re.search('(\d+\.?\d*)[\*\/](\d+\.?\d*)',bracket_content).group()   #提取第一个带有次乘除符号表达式 40.0/5，group将对象转为字符串
         # print(first_mul_div,print(type(first_mul_div)))    #40.0/5
