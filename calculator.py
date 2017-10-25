@@ -15,13 +15,7 @@ def add_sub(bracket_content_after_md): #加减法
         first_add_sub = re.search('(\d+\.?\d*)((\+\-)|(\-\-))(\d+\.?\d*)', bracket_content_after_md).group()  # 提取加减法表达式
         print(first_add_sub)    #60+-3818009.3809523815
 
-
-
-    '''
-    + -  --> -
-    - -  --> +
-    '''
-
+        #加减为减，减减为加
 
         if re.search('\+',first_add_sub):   #如果有+ 那么就是+-
             first_add_sub_dig = re.split('\+', first_add_sub)  # 将数字和+ 号分离
