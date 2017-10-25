@@ -5,7 +5,7 @@ import os
 import json
 
 # expression='1-2*((60+2*(-3-40.0/5)*(9-2*5/3+7/3*99/4*2998+10*568/14))-(-4*3)/(16-3*2))'
-# expression='1-2*10*(-9-2*5/3+7/3*99/4*2998+10*568/14))-(-4*3)/(16-3*2))'
+# expression='1 -2*10*(-9-2*5/3+7/3*99/4*2998+10*568/14))-(-4*3)/(16-3*2))'
 # content=re.search('\(([\-\+\*\/]*\d+\.?\d*)+\)',expression).group() #(-3-40.0/5)
 
 def add_sub(bracket_content_after_md): #加减法
@@ -13,50 +13,56 @@ def add_sub(bracket_content_after_md): #加减法
 
     if re.search('(\d+\.?\d*)((\+\-)|(\-\-))(\d+\.?\d*)',bracket_content_after_md):     #提取+- -- 表达式
         first_add_sub = re.search('(\d+\.?\d*)((\+\-)|(\-\-))(\d+\.?\d*)', bracket_content_after_md).group()  # 提取加减法表达式
-        print(first_add_sub)    #60+-3818009.3809523815
+        # print(first_add_sub)    #60+-3818009.3809523815
 
         #加减为减，减减为加
 
-        if re.search('\+',first_add_sub):   #如果有+ 那么就是+-
-            first_add_sub_dig = re.split('\+', first_add_sub)  # 将数字和+ 号分离
-            print(first_add_sub_dig)    #['60', '-3818009.3809523815']
-        else:
-            first_add_sub_dig = re.split('\-', first_add_sub)  # 将数字和- 号分离
-            print(first_add_sub_dig)
+        if re.search('\+',first_add_sub):   #如果有+ 那么就是+-，就可以转换为-
+            first_add_sub = first_add_sub.replace('+','')
+            # print(first_add_sub)
 
-        if bracket_content_after_md[0] == '-':      #加个负号判断
-            first_dig = -float(first_add_sub_dig[0])    #如果第一位是负号，这将第一个数字变为负数
-            bracket_content_after_md = bracket_content_after_md[1:]   #将这个负号去掉，因为已经变成负数了
+        elif re.search('\-\-',first_add_sub):
+            first_add_sub = first_add_sub.replace('\-\-', '\-')
+
+        first_add_sub_dig = re.split('\+|\-', first_add_sub)  # 将数字和+ - 号分离
+        # print(first_add_sub_dig)    #['3', '8.0']
+
+        if bracket_content_after_md[0] == '-':  # 加个负号判断
+            first_dig = -float(first_add_sub_dig[0])  # 如果第一位是负号，这将第一个数字变为负数
+            bracket_content_after_md = bracket_content_after_md[1:]  # 将这个负号去掉，因为已经变成负数了
             # print(bracket_content_after_md)
         else:
             first_dig = float(first_add_sub_dig[0])
         # print(first_dig)    #3.0
+        second_dig = float(first_add_sub_dig[1])
+        # print(second_dig)   #8.0
+        first_add_sub_sym = re.findall('[\+\-]', first_add_sub)  # 提取运算符号
+        # print(first_add_sub_sym)    #['-']
 
-        # print(first_add_sub_dig[1])     #-3818009.3809523815
-
-        second_dig = float(first_add_sub_dig[1])    #将第二个数转换为浮点数
-        # print(second_dig,type(second_dig))
-
-
-        first_add_sub_sym = re.search('[\+\-]',first_add_sub).group()     #提取运算符号
-        print(first_add_sub_sym)    #+
-
-        if '-' in first_add_sub_sym:        #判断运算符并进行真实运算
+        if '-' in first_add_sub_sym:  # 判断运算符并进行真实运算
             result_add_sub = first_dig - second_dig
             # print(result_add_sub,print(type(result_add_sub)))
             result_add_sub_str = str(result_add_sub)  # 将结果转化为字符串
             # print(result_add_sub_str,type(result_add_sub_str))      #-5.0 <class 'str'>
-        elif '+' in first_add_sub_sym:   #加法进行下面的操作和上面除法操作一样
+        else:  # 加法进行下面的操作和上面除法操作一样
             result_add_sub = first_dig + second_dig
-            print(result_add_sub,print(type(result_add_sub)))
+            # print(result_add_sub,print(type(result_add_sub)))
             result_add_sub_str = str(result_add_sub)  # 将结果转化为字符串
             # print(result_add_sub_str, type(result_add_sub_str))  # -5.0 <class 'str'>
 
-        # bracket_content_after_as = bracket_content_after_md.replace(first_add_sub, result_add_sub_str)  #替换运算结果
-        #
-        # bracket_content_after_md = bracket_content_after_as
-        #
-        # return add_sub(bracket_content_after_md)    ##迭代处理加减
+        print(bracket_content_after_md,type(bracket_content_after_md),first_add_sub,type(first_add_sub),type(result_add_sub_str))
+        #60+-3818009.3809523815 <class 'str'> 60-3818009.3809523815 <class 'str'> <class 'str'>
+        #下面要进行替换操作
+
+        bracket_content_after_md = result_add_sub_str
+        print(bracket_content_after_md,result_add_sub_str)
+        return add_sub(bracket_content_after_md)
+
+
+
+
+
+
 
 
 
