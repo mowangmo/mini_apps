@@ -72,24 +72,27 @@ def init_action(expression):
     # print(expression)
     expression=re.sub(' ','',expression)
     # print(expression)
-    init_l=[i for i in re.split('(\-\d+\.*\d*)',expression) if i]
-    # print('--->',init_l)
-    expression_l=[]
-    while True:
+    # print(re.findall('(\-\d+\.*\d*)',expression))   #提取负数['-1', '-2', '-60', '-40', '-9', '-2', '-5', '-7', '-568', '-4', '-3', '-3']
+    init_l=[i for i in re.split('(\-\d+\.*\d*)',expression) if i]   #以负数为分割，形成列表
+    print('init_l--->',init_l)      # ['-1', '-2', '*((', '-60', '+30+(', '-40', '/5)*(', '-9', '-2', '*', '-5', '/30', '-7', '/3*99/4*2998+10/', '-568', '/14))-(', '-4', '*', '-3', ')/(16', '-3', '*2))+3']
+    expression_l=[]     #定义一个空列表
+    while True:     #死循环
         if len(init_l) == 0:break
-        exp=init_l.pop(0)
-        # print('==>',exp)
+        exp=init_l.pop(0)   #提取列表中的第一位
+        print('exp==>',exp)     #exp==> -1  exp==> -2
         if len(expression_l) == 0 and re.search('^\-\d+\.*\d*$',exp):
             expression_l.append(exp)
             continue
         if len(expression_l) > 0:
             if re.search('[\+\-\*\/\(]$',expression_l[-1]):
                 expression_l.append(exp)
+
                 continue
 
         new_l=[i for i in re.split('([\+\-\*\/\(\)])',exp) if i]
-        expression_l+=new_l
+        expression_l+=new_l     #列表相加
         # print(expression_l)
+        print('e_l : %s  ' % expression_l)  #e_l : ['-1', '-', '2', '*', '(', '(', '-60', '+', '30', '+', '(', '-40', '/', '5', ')', '*', '(', '-9', '-', '2', '*', '-5', '/', '30', '-', '7'] 将所有字符拆分开了
     return expression_l
 
 def main(expression_l):
@@ -137,6 +140,7 @@ def main(expression_l):
 
 if __name__ == '__main__':
     expression='-1 - 2 *((-60+30+(-40/5)*(-9-2*-5/30-7/3*99/4*2998+10/-568/14))-(-4*-3)/(16-3*2))+3'
+    # expression='1-2*((60+2*(-3-40.0/5)*(9-2*5/3+7/3*99/4*2998+10*568/14))-(-4*3)/(16-3*2))'
     # expression='(1-2*3)-1-2*((-60+30+(-40/5)*(-9-2*-5/30-7/3*99/4*2998+10*568/14))-(-4*-3)/(16-3*2))+3'
     # expression='-1 -3*( -2+3)'
     expression_l=init_action(expression)
