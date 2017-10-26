@@ -1,11 +1,8 @@
 # -*- coding:utf-8 -*-
 import re
-import sys
-import os
-import json
 
 # expression='1-2*((60+2*(-3-40.0/5)*(9-2*5/3+7/3*99/4*2998+10*568/14))-(-4*3)/(16-3*2))'
-# expression='1 -2*10*(-9-2*5/3+7/3*99/4*2998+10*568/14))-(-4*3)/(16-3*2))'
+# expression='1 -2*10*(-9-2*5/3+7/3*99/4*2998+10*568/14)-(-4*3)/(16-3*2)'
 # content=re.search('\(([\-\+\*\/]*\d+\.?\d*)+\)',expression).group() #(-3-40.0/5)
 
 def add_sub(bracket_content_after_md): #加减法
@@ -21,8 +18,9 @@ def add_sub(bracket_content_after_md): #加减法
             first_add_sub = first_add_sub.replace('+','')
             # print(first_add_sub)
 
-        elif re.search('\-\-',first_add_sub):
-            first_add_sub = first_add_sub.replace('\-\-', '\-')
+        elif re.search('\-\-',first_add_sub):   #如果为--，则转换为+
+            first_add_sub = first_add_sub.replace('--', '+')
+            # print(first_add_sub)
 
         first_add_sub_dig = re.split('\+|\-', first_add_sub)  # 将数字和+ - 号分离
         # print(first_add_sub_dig)    #['3', '8.0']
@@ -50,22 +48,13 @@ def add_sub(bracket_content_after_md): #加减法
             result_add_sub_str = str(result_add_sub)  # 将结果转化为字符串
             # print(result_add_sub_str, type(result_add_sub_str))  # -5.0 <class 'str'>
 
-        print(bracket_content_after_md,type(bracket_content_after_md),first_add_sub,type(first_add_sub),type(result_add_sub_str))
+        # print(bracket_content_after_md,type(bracket_content_after_md),first_add_sub,type(first_add_sub),type(result_add_sub_str))
         #60+-3818009.3809523815 <class 'str'> 60-3818009.3809523815 <class 'str'> <class 'str'>
         #下面要进行替换操作
 
         bracket_content_after_md = result_add_sub_str
-        print(bracket_content_after_md,result_add_sub_str)
+        # print(bracket_content_after_md,result_add_sub_str)
         return add_sub(bracket_content_after_md)
-
-
-
-
-
-
-
-
-
 
     elif re.search('(\d+\.?\d*)[\+\-](\d+\.?\d*)', bracket_content_after_md):
         first_add_sub = re.search('(\d+\.?\d*)[\+\-](\d+\.?\d*)', bracket_content_after_md).group()     #提取加减法表达式
@@ -104,7 +93,6 @@ def add_sub(bracket_content_after_md): #加减法
 
     else:
         return bracket_content_after_md  ##迭代处理加减
-
 
 def mul_div(bracket_content):   #乘除法--处理括号内所有乘除法
     print("处理乘法运算: %s" %bracket_content)  #-3-40.0/5
@@ -176,10 +164,7 @@ def mul_div(bracket_content):   #乘除法--处理括号内所有乘除法
     else:       #返回处理乘除后结果
         return bracket_content
 
-
         # add_sub(bracket_content_after_md)   #调用加减法
-
-
 
 def deep_bracket(expression): #处理小括号
     if re.search('\(([\-\+\*\/]*\d+\.?\d*)+\)',expression):     #有小括号则提取并处理
@@ -191,7 +176,7 @@ def deep_bracket(expression): #处理小括号
         # print(bracket_content_after_md,type(bracket_content_after_md))      #9-3.3333333333333335+173134.50000000003+405.7142857142857 <class 'str'>
 
         print('=======================')
-        bracket_content_after_as = add_sub(bracket_content_after_md)    #此为第一个小括号的计算结果
+        bracket_content_after_as = add_sub(bracket_content_after_md)    #此为第一个小括号的计算结果,调用加减法函数，算加减法
         # print(bracket_content_after_as)     #173527.88095238098
 
         expression = expression.replace(bracket,bracket_content_after_as)
@@ -199,11 +184,10 @@ def deep_bracket(expression): #处理小括号
 
         deep_bracket(expression)
 
-
-
-
     else:   #没有小括号交给乘法和加法处理
-        mul_div(expression)
+        # mul_div(expression)
+        bracket_content_after_md = mul_div(expression)      #先调用乘除函数
+        bracket_content_after_as = add_sub(bracket_content_after_md)        #再掉用加减函数
 
 if __name__ == "__main__":
     expression = input("请输入表达式>>:")
