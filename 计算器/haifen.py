@@ -68,28 +68,31 @@ def calculate(num1,symbol,num2):
     print('from calculate res is [%s|%s|%s] %s' %(num1,symbol,num2,res))
     return res
 
-def init_action(expression):
+def init_action(expression):    #将表达式以负数分成一个列表，再将非负数拆开重新形成一个列表。
     # print(expression)
     expression=re.sub(' ','',expression)
     # print(expression)
     # print(re.findall('(\-\d+\.*\d*)',expression))   #提取负数['-1', '-2', '-60', '-40', '-9', '-2', '-5', '-7', '-568', '-4', '-3', '-3']
     init_l=[i for i in re.split('(\-\d+\.*\d*)',expression) if i]   #以负数为分割，形成列表
     print('init_l--->',init_l)      # ['-1', '-2', '*((', '-60', '+30+(', '-40', '/5)*(', '-9', '-2', '*', '-5', '/30', '-7', '/3*99/4*2998+10/', '-568', '/14))-(', '-4', '*', '-3', ')/(16', '-3', '*2))+3']
-    expression_l=[]     #定义一个空列表
-    while True:     #死循环
+    expression_l=[]
+    while True:
         if len(init_l) == 0:break
-        exp=init_l.pop(0)   #提取列表中的第一位
-        print('exp==>',exp)     #exp==> -1  exp==> -2
-        if len(expression_l) == 0 and re.search('^\-\d+\.*\d*$',exp):
+        exp=init_l.pop(0)   #提取列表中的第一位,列表中也删除了第一位
+        print('exp==>',exp)     #exp==> -1  exp==> -2   exp==> *((
+        if len(expression_l) == 0 and re.search('^\-\d+\.*\d*$',exp):   #第一次列表为空，将第一个数加入expression_l
             expression_l.append(exp)
+            print('e_l ==0 ',expression_l)      #['-1']
             continue
-        if len(expression_l) > 0:
-            if re.search('[\+\-\*\/\(]$',expression_l[-1]):
+        if len(expression_l) > 0:   #['-1', '-', '2', '*', '(', '(', '-60']     #除了第一次列表为空，剩下循环都走这
+            if re.search('[\+\-\*\/\(]$',expression_l[-1]):     #提取列表中最后一位 + - * / ( ，并加入到列表中，若e_l列表中最后一位不是数字，则将exp加入到列表中，否则往下执行
                 expression_l.append(exp)
+                print('e_l > 0 ',expression_l)
 
                 continue
 
-        new_l=[i for i in re.split('([\+\-\*\/\(\)])',exp) if i]
+        new_l=[i for i in re.split('([\+\-\*\/\(\)])',exp) if i]    #提取+ - * / ( )
+        print('new_l ' ,new_l)
         expression_l+=new_l     #列表相加
         # print(expression_l)
         print('e_l : %s  ' % expression_l)  #e_l : ['-1', '-', '2', '*', '(', '(', '-60', '+', '30', '+', '(', '-40', '/', '5', ')', '*', '(', '-9', '-', '2', '*', '-5', '/', '30', '-', '7'] 将所有字符拆分开了
