@@ -1,0 +1,8 @@
+[2017-10-18 18:04:56,732][MainThread:1644][task_id:ATM.conf.my_log_settings][my_log_settings.py:75][INFO][It works!]
+[2017-10-18 18:04:56,732][MainThread:1644][task_id:ATM.lib.sql_function][sql_function.py:22][WARNING][进入sql_distribute功能，调用select_module子功能]
+[2017-10-18 18:04:56,744][MainThread:1644][task_id:ATM.lib.sql_function][sql_function.py:22][WARNING][进入sql_distribute功能，调用select_module子功能]
+[2017-10-18 18:04:56,746][MainThread:1644][task_id:ATM.lib.sql_function][sql_function.py:22][WARNING][进入sql_distribute功能，调用select_module子功能]
+[2017-10-18 18:04:56,747][MainThread:1644][task_id:ATM.lib.sql_function][sql_function.py:22][WARNING][进入sql_distribute功能，调用select_module子功能]
+[2017-10-18 18:04:56,749][MainThread:1644][task_id:ATM.lib.sql_function][sql_function.py:22][WARNING][进入sql_distribute功能，调用select_module子功能]
+[2017-10-18 18:04:56,750][MainThread:1644][task_id:ATM.lib.sql_function][sql_function.py:22][WARNING][进入sql_distribute功能，调用select_module子功能]
+[2017-10-18 18:13:06,893][MainThread:9908][task_id:__main__][my_log_settings.py:75][INFO][It works!]
