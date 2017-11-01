@@ -1,17 +1,15 @@
-#!/usr/bin/python3
+class A:
+    def hahaha(self):
+        print('A')
 
-class Vector:
-    def __init__(self, a, b):
-        self.a = a
-        self.b = b
+class B(A):
+    def hahaha(self):
+        super().hahaha()
+        super(B,self).hahaha()
+        A.hahaha(self)
+        print('B')
 
-    def __str__(self):
-        return 'Vector (%d, %d)' % (self.a, self.b)
-
-    def __add__(self, other):
-        return Vector(self.a + other.a, self.b + other.b)
-
-
-v1 = Vector(2, 10)
-v2 = Vector(5, -2)
-print(v1 + v2)
+a = A()
+b = B()
+b.hahaha()
+super(B,b).hahaha()
