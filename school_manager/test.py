@@ -1,17 +1,17 @@
-class Classmethod_Demo():
-    role = 'dog'
+#!/usr/bin/python3
 
-    @classmethod
-    def func(cls):
-        print(cls.role)
+class Vector:
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
 
-Classmethod_Demo.func()
+    def __str__(self):
+        return 'Vector (%d, %d)' % (self.a, self.b)
 
-class Staticmethod_Demo():
-    role = 'dog'
+    def __add__(self, other):
+        return Vector(self.a + other.a, self.b + other.b)
 
-    @staticmethod
-    def func():
-        print("当普通方法用")
 
-Staticmethod_Demo.func()
+v1 = Vector(2, 10)
+v2 = Vector(5, -2)
+print(v1 + v2)

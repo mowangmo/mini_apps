@@ -1,5 +1,4 @@
 #_*_coding:utf-8_*_
-__author__ = 'Linhaifeng'
 import time
 import pickle
 import os
