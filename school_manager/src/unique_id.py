@@ -8,7 +8,8 @@ class Id:
             'admin', 'school', 'teacher', 'course', 'course_to_teacher', 'classes', 'student'
         ]
         if obj not in obj_list:      #如果创建的对象不再列表中则抛出异常
-            raise Exception('对象输入有误！请选择：%s'  % ','  .join(obj_list))    #对象输入有误！请选择：admin,school,teacher,course,course_to_teacher,classes,student
+            raise Exception('对象输入有误！请选择：%s'  % ','  .join(obj_list))
+            #对象输入有误！请选择：admin,school,teacher,course,course_to_teacher,classes,student
 
         self.obj = obj
         self.uuid = commons.set_uuid()

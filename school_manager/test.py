@@ -1,54 +1,19 @@
-# IND = 'ON'
-# def checkind():
-#     return (IND == 'ON')
-# class Kls(object):
-#      def __init__(self,data):
-#         self.data = data
-# def do_reset(self):
-#     if checkind():
-#         print('Reset done for:', self.data)
-# def set_db(self):
-#     if checkind():
-#         self.db = 'new db connection'
-#         print('DB connection made for:',self.data)
-# ik1 = Kls(12)
-# do_reset(ik1)
-# set_db(ik1)
+class StaticMethod:
+    def __init__(self,func):
+        self.func=func
 
+    def __get__(self, instance, owner): #类来调用,instance为None,owner为类本身,实例来调用,instance为实例,owner为类本身,
+        def feedback(*args,**kwargs):
+            print('在这里可以加功能啊...')
+            return self.func(*args,**kwargs)
+        return feedback
 
-# IND = 'no'
-# class Kls(object):
-#     def __init__(self, data):
-#         self.data = data
-#     @staticmethod
-#     def checkind():
-#         return (IND == 'ON')
-#     def do_reset(self):
-#         if self.checkind():
-#             print('Reset done for:', self.data)
-#     def set_db(self):
-#         if self.checkind():
-#             self.db = 'New db connection'
-#         print('DB connection made for: ', self.data)
-# ik1 = Kls(12)
-# ik1.do_reset()
-# ik1.set_db()
+class People:
+    @StaticMethod# say_hi=StaticMethod(say_hi)
+    def say_hi(x,y,z):
+        print('------>',x,y,z)
 
-class Kls(object):
-    def __init__(self, data):
-        self.data = data
-    def printd(self):
-        print(self.data)
-    @staticmethod
-    def smethod(*arg):
-        print('Static:', arg)
-    @classmethod
-    def cmethod(*arg):
-        print('Class:', arg)
+People.say_hi(1,2,3)
 
-ik = Kls(23)
-ik.printd()
-ik.smethod()
-ik.cmethod()
-Kls.smethod()
-Kls.cmethod()
+p1=People()
+p1.say_hi(4,5,6)
