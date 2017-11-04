@@ -87,9 +87,41 @@ class Course_to_teacher(Base_Model):    #课程跟老师的关系
         if course_to_teacher_l:
             return [
                         course_to_teacher_l.course_id.find_uuid_obj(),
-                        course_to_teacher_l.classes_nid.find_uuid_obj()
+                        course_to_teacher_l.classes_id.find_uuid_obj()
                     ]
         return [None,None]
+
+class Classes(Base_Model): #
+    db_path = settings.CLASSES_DB_DIR
+    def __init__(self,name,fee,school_id,course_to_teacher_list):
+        self.id = unique_id.Classes_id(self.db_path)
+        self.name = name
+        self.fee = fee
+        self.school_id = school_id
+        self.course_to_teacher_list = course_to_teacher_list
+
+class Sorce(Base_Model):    #分数类
+    def __init__(self,id):
+        self.id = id
+        self.score_dict = {} #记录各个学科的分数
+
+    def entering(self,course_to_teacher_id,number):     #录入分数
+        self.score_dict[course_to_teacher_id] = number  #记录某科分数
+
+    def get(self,course_to_teacher_id):     #获取分数
+        return self.score_dict.get(course_to_teacher_id)    #字典的get方法
+
+class Student(Base_Model):
+    db_path = settings.SCHOOL_DB_DIR
+    def __init__(self,name,age,qq,classes_id):
+        self.id = unique_id.Student_id(self.db_path)
+        self.name = name
+        self.age = age
+        self.qq = qq
+        self.classes_id = classes_id
+        self.score = Sorce(self.id)
+
+
 
 
 
