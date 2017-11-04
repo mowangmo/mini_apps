@@ -65,7 +65,7 @@ class Teacher(BaseModel):
         self.nid=identifier.TeacherNid(self.db_path)
         self.name=name
         self.level=level
-        self.__account=0
+        self.__account=0    #账户隐私信息
         self.create_time=time.strftime('%Y-%m-%d %X')
 
 class Course(BaseModel):

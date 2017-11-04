@@ -11,3 +11,7 @@ COURSE_DB_DIR=os.path.join(BASE_DIR,'db','course')
 COURSE_TO_TEACHER_DB_DIR=os.path.join(BASE_DIR,'db','course_to_teacher')
 CLASSES_DB_DIR=os.path.join(BASE_DIR,'db','classes')
 STUDENT_DB_DIR=os.path.join(BASE_DIR,'db','student')
+
+
+# if __name__ == '__main__':
+#     print(ADMIN_DB_DIR)
