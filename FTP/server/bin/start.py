@@ -8,14 +8,15 @@ import sys
 BASE_DIR = (os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(BASE_DIR)
 
-from src import login_fun
+from src import server
+import socketserver
 
 
 
 
 if __name__ == '__main__':
     print("----------欢迎使用ftp----------""\n")
-    name = input('name >>:')
-    passwd = input('pass >>:')
-    login_fun.login(name,passwd)
+    ftpserver = socketserver.ThreadingTCPServer(('127.0.0.1', 8083), server.FtpServer)
+    ftpserver.serve_forever()
+    server.register()
 
