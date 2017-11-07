@@ -1,3 +1,5 @@
-import  uuid
+a = {'b':23333}
 
-print(str(uuid.uuid1()))
+print(a['b'])
+b = a.get('c')
+print(b)

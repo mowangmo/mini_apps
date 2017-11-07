@@ -30,17 +30,27 @@ class MYTCPClient:
         self.socket.close()
 
     def register(self):     #验证登录
-        name = input("请输入用户名>>: ").strip()
-        passwd = input("请输入密码>>: ").strip()
-        name_uuid = str(uuid.uuid3(uuid.NAMESPACE_DNS, name))   #通过uuid加密发送过去
-        passwd_uuid = str(uuid.uuid3(uuid.NAMESPACE_DNS, passwd))
-        account_dict = {'name':name_uuid,'passwd':passwd_uuid}
-        # print(account_dict)   #{'name': 'e2970275-dded-3cb3-ad59-85f888c7ad90', 'passwd': '79320ea6-f27c-3294-a486-aaa1cbda61cc'}
-        account_json = json.dumps(account_dict)     #序列化
-        account_json_bytes = bytes(account_json,encoding=self.coding)   #转换为utf8的bytes才可以发送
-        self.socket.send(account_json_bytes)    #将用户名和密码发送过去
-        res = self.socket.recv(1024)
-        print(res)
+        while True:
+            name = input("请输入用户名>>: ").strip()
+            passwd = input("请输入密码>>: ").strip()
+            # name_uuid = str(uuid.uuid3(uuid.NAMESPACE_DNS, name))   #通过uuid加密发送过去
+            passwd_uuid = str(uuid.uuid3(uuid.NAMESPACE_DNS, passwd))
+            account_dict = {'name':name,'passwd':passwd_uuid}
+            # print(account_dict)   #{'name': 'wangmo', 'passwd': '79320ea6-f27c-3294-a486-aaa1cbda61cc'}
+            account_json = json.dumps(account_dict)     #序列化
+            account_json_bytes = bytes(account_json,encoding=self.coding)   #转换为utf8的bytes才可以发送
+            self.socket.send(account_json_bytes)    #将用户名和密码发送过去
+
+            res = self.socket.recv(1024)    #接收服务端返回的结果
+            res_json = res.decode(self.coding)
+            res_dict = json.loads(res_json)
+            print(res_dict)
+            if res_dict['status'] == '0':
+                print(res_dict['message'])
+                break
+            elif res_dict['status'] == '1':
+                print(res_dict['message'])
+                continue
 
     def run(self):
         while True:
