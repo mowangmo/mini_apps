@@ -26,24 +26,29 @@ class FtpServer(socketserver.BaseRequestHandler):   # 必须继承BaseRequestHan
                 func(head_dic)
 
     def register(self):     #验证登录
-        account = self.request.recv(1024)
-        account_json = account.decode(self.coding)
-        account_dict = json.loads(account_json)
-        # print(account_dict,type(account_dict))     #取到用户名和密码
-        #"{\"name\": \"wangmo\", \"passwd\": \"4dfc6b14-7213-3363-8009-b23c56e3a1b1\"}"
-        name = account_dict['name']
-        passwd = account_dict['passwd']
+        while True:
+            account = self.request.recv(1024)
+            account_json = account.decode(self.coding)
+            account_dict = json.loads(account_json)
+            # print(account_dict,type(account_dict))     #取到用户名和密码
+            #"{\"name\": \"wangmo\", \"passwd\": \"4dfc6b14-7213-3363-8009-b23c56e3a1b1\"}"
+            name = account_dict['name']
+            passwd = account_dict['passwd']
 
-        if passwd == account_db.all_account.get('name'):
-            res = {'status':'0','message':'用户验证成功'}
-            print(res['message'])
-        else:
-            res = {'status': '1', 'message': '用户名或密码输入有误'}
-            print(res['message'])
-
-        res_json = json.dumps(res)      #将验证结果发送给客户端
-        res_json_bytes = bytes(res_json, encoding=self.coding)
-        self.request.sendall(res_json_bytes)
+            if passwd == account_db.all_account.get(name):
+                res = {'name':name,'status':'0','message':'用户验证成功!'}
+                print(res['message'])
+                res_json = json.dumps(res)  # 将验证结果发送给客户端
+                res_json_bytes = bytes(res_json, encoding=self.coding)
+                self.request.sendall(res_json_bytes)
+                break   #验证过了则退出走下一步
+            else:
+                res = {'name':name,'status': '1', 'message': '用户名或密码输入有误!'}
+                print(res['message'])
+                res_json = json.dumps(res)      #将验证结果发送给客户端
+                res_json_bytes = bytes(res_json, encoding=self.coding)
+                self.request.sendall(res_json_bytes)
+                continue    #验证没通过，继续进行验证
 
     def put(self,args):
         file_path = os.path.normpath(os.path.join(

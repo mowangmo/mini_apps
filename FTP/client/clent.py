@@ -45,22 +45,35 @@ class MYTCPClient:
             res_json = res.decode(self.coding)
             res_dict = json.loads(res_json)
             print(res_dict)
+
             if res_dict['status'] == '0':
                 print(res_dict['message'])
-                break
+                return res_dict  #验证过了则退出走下一步
             elif res_dict['status'] == '1':
                 print(res_dict['message'])
-                continue
+                continue    #验证没通过，继续进行验证
 
-    def run(self):
+    def run(self,status_code):
         while True:
-            inp=input(">>: ").strip()   #put file1
+            name = status_code['name']
+            inp=input(name + ">>: ").strip()   #put file1
             if not inp:continue
             l=inp.split()
             cmd=l[0]
+
+            if cmd == 'useradd' and name == 'admin':
+                self.useradd()
+
             if hasattr(self,cmd):
                 func=getattr(self,cmd)
                 func(l)
+
+    def useradd(self,name,size):  #仅admin用户才能创建
+        name = status_code['name']
+        if name == 'admin':
+            print('yes')
+        else:
+            print('Permission denied ！')
 
     def put(self,args):     ##put file1
         cmd=args[0]
@@ -89,6 +102,6 @@ class MYTCPClient:
                 print('upload successful')
 
 if __name__ == '__main__':
-    client=MYTCPClient(('127.0.0.1',8083))      #生成一个client对象，并建立socket连接
-    client.register()
-    client.run()        #client对象通过反射调用类中的方法
+    client=MYTCPClient(('127.0.0.1',8085))      #生成一个client对象，并建立socket连接
+    status_code = client.register()     #连接状态
+    client.run(status_code)        #client对象通过反射调用类中的方法

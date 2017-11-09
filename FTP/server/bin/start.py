@@ -16,7 +16,7 @@ import socketserver
 
 if __name__ == '__main__':
     print("----------欢迎使用ftp----------""\n")
-    ftpserver = socketserver.ThreadingTCPServer(('127.0.0.1', 8083), server.FtpServer)
+    ftpserver = socketserver.ThreadingTCPServer(('127.0.0.1', 8085), server.FtpServer)
     ftpserver.serve_forever()
     server.register()
 
