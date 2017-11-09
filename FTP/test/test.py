@@ -1,3 +1,3 @@
-inp = 'useradd a 10G'
-l = inp.split()
-print(l)
+import os,sys
+BASE_DIR=os.path.dirname(os.path.abspath(__file__))
+print(BASE_DIR)

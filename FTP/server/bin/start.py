@@ -1,7 +1,5 @@
 #_*_coding:utf-8_*_
 
-
-
 import os
 import sys
 
@@ -10,9 +8,6 @@ sys.path.append(BASE_DIR)
 
 from src import server
 import socketserver
-
-
-
 
 if __name__ == '__main__':
     print("----------欢迎使用ftp----------""\n")

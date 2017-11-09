@@ -3,6 +3,8 @@ import struct
 import json
 import os
 from db import account_db
+import configparser
+from bin import start
 
 class FtpServer(socketserver.BaseRequestHandler):   # 必须继承BaseRequestHandler
     coding='utf-8'
@@ -49,6 +51,15 @@ class FtpServer(socketserver.BaseRequestHandler):   # 必须继承BaseRequestHan
                 res_json_bytes = bytes(res_json, encoding=self.coding)
                 self.request.sendall(res_json_bytes)
                 continue    #验证没通过，继续进行验证
+
+    def useradd(self,args):
+        print(args)
+        name = args['name']
+        size = args['size']
+        home_path = os.path.normpath(os.path.join(
+            os.path.dirname(self.BASE_DIR),'db','put_file'
+        ) )
+        print(home_path)    #F:\code\python19\mini_apps\FTP\server\db\put_file
 
     def put(self,args):
         file_path = os.path.normpath(os.path.join(

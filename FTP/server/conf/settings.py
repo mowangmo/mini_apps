@@ -4,4 +4,4 @@ sys.path.append(BASE_DIR)
 
 from db import account_db
 
-print(account_db.all_account['admin'])
+# print(account_db.all_account['admin'])

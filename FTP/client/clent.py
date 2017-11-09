@@ -61,19 +61,27 @@ class MYTCPClient:
             l=inp.split()
             cmd=l[0]
 
-            if cmd == 'useradd' and name == 'admin':
-                self.useradd()
-
             if hasattr(self,cmd):
-                func=getattr(self,cmd)
-                func(l)
+                if name == 'admin' and cmd == 'useradd':  # 仅创建用户时走这
+                    self.useradd(l)
+                else:
+                    func=getattr(self,cmd)
+                    func(l)
 
-    def useradd(self,name,size):  #仅admin用户才能创建
-        name = status_code['name']
-        if name == 'admin':
-            print('yes')
-        else:
-            print('Permission denied ！')
+    def useradd(self,args):  #仅admin用户才能创建
+        # print(args)   #['useradd', 'wangmo', '1']
+        cmd = args[0]
+        name = args[1]
+        size = args[2]
+        head_dic = {'cmd':cmd,'name':name,'size':size}    #生成一个json的用户信息发给server端
+        head_json = json.dumps(head_dic)
+        head_json_bytes = bytes(head_json,encoding=self.coding)
+
+        head_struct = struct.pack('i', len(head_json_bytes))
+        self.socket.send(head_struct)
+        self.socket.send(head_json_bytes)
+
+        # print('创建用户 %s 成功，可用空间为 %s G' % (name,size))
 
     def put(self,args):     ##put file1
         cmd=args[0]
@@ -103,5 +111,5 @@ class MYTCPClient:
 
 if __name__ == '__main__':
     client=MYTCPClient(('127.0.0.1',8085))      #生成一个client对象，并建立socket连接
-    status_code = client.register()     #连接状态
+    status_code = client.register()     #连接状态码
     client.run(status_code)        #client对象通过反射调用类中的方法
