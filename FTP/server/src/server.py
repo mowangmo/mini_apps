@@ -57,9 +57,29 @@ class FtpServer(socketserver.BaseRequestHandler):   # 必须继承BaseRequestHan
         name = args['name']
         size = args['size']
         home_path = os.path.normpath(os.path.join(
-            os.path.dirname(self.BASE_DIR),'db','put_file'
+            os.path.dirname(self.BASE_DIR),'db','put_file',name
         ) )
         print(home_path)    #F:\code\python19\mini_apps\FTP\server\db\put_file
+
+        if not os.path.exists(home_path):   #为用户创建家目录
+            os.mkdir(home_path)
+            print(home_path,'创建成功')
+
+        conf_path = os.path.normpath(os.path.join(      #配置文件路径
+            os.path.dirname(self.BASE_DIR),'conf','settings.ini'
+        ))
+        print(conf_path)    #D:\工作目录\code\mini_apps\FTP\server\conf\settings.ini
+        config = configparser.ConfigParser()    #为用户生成配置文件
+        config.read(conf_path)   #读取配置文件
+        sections = config.sections()
+        print(sections)
+
+        if name not in sections:   #如果没有该用户则生成配置文件
+            config[name] = {}
+            config[name] ={ 'size':size,'home_path':home_path}
+            with open(conf_path , 'a') as configfile:
+                config.write(configfile)    #
+                print(name,'已生成配置文件')
 
     def put(self,args):
         file_path = os.path.normpath(os.path.join(

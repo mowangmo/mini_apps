@@ -81,7 +81,7 @@ class MYTCPClient:
         self.socket.send(head_struct)
         self.socket.send(head_json_bytes)
 
-        # print('创建用户 %s 成功，可用空间为 %s G' % (name,size))
+        print('创建用户 %s 成功，可用空间为 %s G' % (name,size))
 
     def put(self,args):     ##put file1
         cmd=args[0]
