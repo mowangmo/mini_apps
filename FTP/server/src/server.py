@@ -4,11 +4,10 @@ import json
 import os
 from db import account_db
 import configparser
-from bin import start
 
 class FtpServer(socketserver.BaseRequestHandler):   # 必须继承BaseRequestHandler
     coding='utf-8'
-    server_dir='file_upload'
+    server_dir='put_file'
     max_packet_size=1024
     BASE_DIR=os.path.dirname(os.path.abspath(__file__))
     def handle(self):   # 必须有handle方法
@@ -56,6 +55,8 @@ class FtpServer(socketserver.BaseRequestHandler):   # 必须继承BaseRequestHan
         print(args)
         name = args['name']
         size = args['size']
+        password_uuid = args['password_uuid']
+
         home_path = os.path.normpath(os.path.join(
             os.path.dirname(self.BASE_DIR),'db','put_file',name
         ) )
@@ -75,20 +76,25 @@ class FtpServer(socketserver.BaseRequestHandler):   # 必须继承BaseRequestHan
         print(sections)
 
         if name not in sections:   #如果没有该用户则生成配置文件
-            config[name] = {}
-            config[name] ={ 'size':size,'home_path':home_path}
+            config.add_section(name)    #添加标题
+            config[name] = {'size': size, 'home_path': home_path}   #添加内容
             with open(conf_path , 'a') as configfile:
-                config.write(configfile)    #
-                print(name,'已生成配置文件')
+                config.write(configfile)    #写入配置文件
+                print('用户', name ,'已生成配置文件')
+
+        if name not in account_db.all_account:      #在数据库中添加一个用户
+            account_db.all_account[name] = password_uuid
+            print(account_db.all_account)
 
     def put(self,args):
+        filesize = args['filesize']
+        name = args['name']
         file_path = os.path.normpath(os.path.join(
             self.BASE_DIR,
-            self.server_dir,
-            args['filename']    #提取字典的文件名
+            'db',self.server_dir,name,
+            args['filename']    #提取字典的文件名,
         ))
 
-        filesize = args['filesize']
         recv_size = 0
         print('----->', file_path)
         with open(file_path, 'wb') as f:

@@ -4,6 +4,7 @@ import json
 import os
 import uuid
 
+
 class MYTCPClient:
     address_family = socket.AF_INET     #互联网模式
     socket_type = socket.SOCK_STREAM    #tcp
@@ -69,11 +70,15 @@ class MYTCPClient:
                     func(l)
 
     def useradd(self,args):  #仅admin用户才能创建
-        # print(args)   #['useradd', 'wangmo', '1']
+        # print(args)   #['useradd', 'wangmo', '1', '1234567']  用户名，空间大小，密码
         cmd = args[0]
         name = args[1]
         size = args[2]
-        head_dic = {'cmd':cmd,'name':name,'size':size}    #生成一个json的用户信息发给server端
+        password = args[3]
+        password_uuid = str(uuid.uuid3(uuid.NAMESPACE_DNS, password))
+        print(password_uuid)
+        head_dic = {'cmd':cmd,'name':name,'size':size,'password_uuid':password_uuid}    #生成一个json的用户信息发给server端
+        print(head_dic)
         head_json = json.dumps(head_dic)
         head_json_bytes = bytes(head_json,encoding=self.coding)
 
@@ -86,13 +91,13 @@ class MYTCPClient:
     def put(self,args):     ##put file1
         cmd=args[0]
         filename=args[1]
-        if not os.path.isfile(filename):
+        if not os.path.isfile(filename):    #判断文件是否存在
             print('file:%s is not exists' %filename)
             return
         else:
-            filesize=os.path.getsize(filename)
+            filesize=os.path.getsize(filename)  #获取文件大小
 
-        head_dic={'cmd':cmd,'filename':os.path.basename(filename),'filesize':filesize}
+        head_dic={'cmd':cmd,'filename':os.path.basename(filename),'filesize':filesize}  #basename 返回文件名
         print(head_dic)
         head_json=json.dumps(head_dic)
         head_json_bytes=bytes(head_json,encoding=self.coding)
