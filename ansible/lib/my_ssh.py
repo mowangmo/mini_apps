@@ -27,8 +27,8 @@ class Ssh_server:
         self.ssh_sftp.close()
         self.ssh.close()
 
-# if __name__ == '__main__':
-#     ssh_obj = Ssh_server('172.16.160.99','22','root','!QAZ2wsx')
-#     res = ssh_obj.run_cmd('df -h')
-#     print(res.decode('utf-8'))
-#     ssh_obj.close()
+if __name__ == '__main__':
+    ssh_obj = Ssh_server('172.16.160.98','22','root','!QAZ2wsx')
+    res = ssh_obj.run_cmd('df -h')
+    print(res.decode('utf-8'))
+    ssh_obj.close()

@@ -1,4 +1,5 @@
-from optparse import OptionParser  
+#_*_coding:utf-8_*_
+from optparse import OptionParser
 from optparse import OptionGroup
 
 def my_opt():
