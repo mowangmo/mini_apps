@@ -1,6 +1,9 @@
 #encoding:utf8
-
 import paramiko
+from bin import batch_run
+import configparser
+from conf import settings
+
 
 class Ssh_server:
     def __init__(self,hostname,port,username,password):
@@ -15,7 +18,9 @@ class Ssh_server:
 
     def run_cmd(self,cmd):  #cmd为传入的命令
         stdin, stdout, stderr = self.ssh.exec_command(cmd)
-        return stdout.read()
+        res = stdout.read()
+        res_str = res.decode('utf-8')
+        return res_str
 
     def put(self,localpath,remotepath): #上传方法
         self.ssh_sftp.put(localpath,remotepath)
@@ -30,5 +35,6 @@ class Ssh_server:
 if __name__ == '__main__':
     ssh_obj = Ssh_server('172.16.160.98','22','root','!QAZ2wsx')
     res = ssh_obj.run_cmd('df -h')
-    print(res.decode('utf-8'))
+    print('res',type(res))
+    print(res)
     ssh_obj.close()

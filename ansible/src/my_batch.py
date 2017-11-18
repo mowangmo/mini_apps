@@ -1,6 +1,7 @@
 import configparser
 from conf import settings
 from lib import my_ssh
+from concurrent.futures import ThreadPoolExecutor,ProcessPoolExecutor,Executor
 
 class Batch:
     def __init__(self,options):
@@ -47,33 +48,6 @@ class Batch:
 
         print('去重后的主机：',finally_host_list)
 
-        for h in finally_host_list:     #提取每一个主机的详细信息
-            hostname = config.get(h,'ip')
-            print(hostname)
-            port = config.get(h,'port')
-            username = config.get(h,'username')
-            password = config.get(h,'password')
-            print('连接主机：',hostname,port,username,'password')
+        return finally_host_list,cmd
 
-            # ssh_obj = my_ssh.Ssh_server(hostname, port,username, password)  #生成一个连接对象
-            ssh_obj = my_ssh.Ssh_server('172.16.160.98', port,username, password)  #生成一个连接对象
-            res_cmd = ssh_obj.run_cmd(cmd)
-            print('命令结果：',res_cmd.decode('utf-8'))
-            ssh_obj.close()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
 

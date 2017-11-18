@@ -1,4 +1,9 @@
-a = 12
-b = "'%s'"%eval('a')
-print(b)
-print("'%s'"%eval('a'))
+a = [1,2,3,4,5]
+print(a[-1:])
+print(a[:-1])
+
+b='aaa'
+c=[b]
+print(c)
+
+print(a + c)
