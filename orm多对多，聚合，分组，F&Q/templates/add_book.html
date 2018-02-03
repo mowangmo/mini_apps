@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form action="/add_book/" method="post">
+    {% csrf_token %}
+    <p>书名 <input type="text" name="title"></p>
+    <p>价格 <input type="text" name="price"></p>
+    <p>出版时间 <input type="date" name="pub_date"></p>
+    <p>
+        <select name="publish_id" id="">
+            {% for publish in publish_list %}
+                <option value="{{ publish.id }}">{{ publish.name }}</option>
+            {% endfor %}
+
+        </select>
+    </p>
+    <input type="submit">
+</form>
+
+</body>
+</html>

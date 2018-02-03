@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>编辑页面</h1>
+<form action="/edit/{{ edit_book.id }}" method="post">
+    {% csrf_token %}
+    <p>书名 <input type="text" name="title" value="{{ edit_book.title }}"></p>
+    <p>价格 <input type="text" name="price" value="{{ edit_book.price }}"></p>
+    <p>出版时间 <input type="date" name="pub_date" value="{{ edit_book.publishDate|date:'Y-m-d' }}"></p>
+    <p>
+        <select name="publish_id" id="">
+            {% for publish in publish_list %}
+                {% if publish == edit_book.publish %}
+                     <option selected value="{{ publish.id }}">{{ publish.name }}</option>
+                {% else %}
+                     <option value="{{ publish.id }}">{{ publish.name }}</option>
+                {% endif %}
+
+            {% endfor %}
+        </select>
+    </p>
+    <input type="submit">
+</form>
+
+</body>
+</html>
