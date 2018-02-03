@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js "></script>
+</head>
+<body>
+
+<h1>index</h1>
+{% csrf_token %}
+
+<button class="t">click</button>
+<p class="con"></p>
+<hr>
+
+<input type="text" id="num1">+<input type="text" id="num2">=<input type="text" id="ret"><button class="cal">submit</button>
+<script>
+    $(".t").click(function () {
+        // ajax请求
+        $.ajax({
+            url:"/ajax_handle1/",
+            type:"get",
+            success:function (data) {
+
+                console.log(data);
+                console.log(typeof data);
+
+                var data=JSON.parse(data);
+                console.log(data);
+                console.log(data["state"]);
+                console.log(typeof data);
+                //$(".con").html(data)
+            }
+        })
+    });
+
+    $(".cal").click(function () {
+
+         // ajax请求
+        $.ajax({
+            url:"/ajax_handle2/",
+            type:"post",
+            data:{"num1":$("#num1").val(),
+                  "num2":$("#num2").val(),
+                  "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val()},
+            success:function (data) {
+               $("#ret").val(data)
+            }
+        })
+
+    })
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
