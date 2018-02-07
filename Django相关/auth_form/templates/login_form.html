@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+
+
+{#<form action="" method="post" novalidate>#}
+{#    {% csrf_token %}#}
+{#    {{ login_form.as_p }}#}
+{#    <input type="submit">#}
+{#</form>#}
+
+<hr>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <form action="" method="post" novalidate>
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="">{{ login_form.user.label }}</label>
+                    {{ login_form.user }} <span>{{ login_form.errors.user.0 }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="">{{ login_form.pwd.label }}</label>
+                    {{ login_form.pwd }} <span>{{ login_form.errors.pwd.0 }}</span>
+                </div>
+                <input type="submit">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
