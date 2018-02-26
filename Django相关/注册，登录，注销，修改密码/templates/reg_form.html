@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+
+<style type="text/css">
+    .container {
+        margin-top: 150px;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 col-md-offset-4">
+            <form action="" method="post" novalidate>
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="user">{{ reg_form.user.label }}</label>
+                    {{ reg_form.user }} <span>{{ reg_form.errors.user.0 }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="pwd">{{ reg_form.pwd.label }}</label>
+                    {{ reg_form.pwd }} <span>{{ reg_form.errors.pwd.0 }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="pwd2">{{ reg_form.pwd2.label }}</label>
+                    {{ reg_form.pwd2 }} <span>{{ reg_form.errors.pwd2.0 }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="email">{{ reg_form.email.label }}</label>
+                    {{ reg_form.email }} <span>{{ reg_form.errors.email.0 }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="phone">{{ reg_form.phone.label }}</label>
+                    {{ reg_form.phone }} <span>{{ reg_form.errors.phone.0 }}</span>
+                </div>
+                <a href="/login/">
+                    <input type="button" class="btn btn-info col-md-5 " value="取消">
+                </a>
+                <input type="submit" class="btn btn-primary col-md-5 col-md-offset-2">
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+
+<style type="text/css">
+    .container {
+        margin-top: 150px;
+    }
+    a {
+        text-decoration:none;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 col-md-offset-4">
+            <form action="" method="post" novalidate>
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="old_password">原密码</label>
+                    <input type="password" name="old_password" class="form-control" id="old_password">
+                </div>
+                <div class="form-group">
+                    <label for="new_password">新密码</label>
+                    <input type="password" name="new_password" class="form-control" id="new_password">
+                </div>
+                <div class="form-group">
+                    <label for="repeat_password">确认密码</label>
+                    <input type="password" name="repeat_password" class="form-control" id="repeat_password">
+                </div>
+                <a href="/index/">
+                    <input type="button" class="btn btn-info col-md-5 " value="取消">
+                </a>
+                <input type="submit" class="btn btn-primary col-md-5 col-md-offset-2">
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
